@@ -1,159 +1,107 @@
-/* ═══════════════════════════════════════════════════════════════
-   EMAILJS CONFIGURATION
-   ───────────────────────────────────────────────────────────────
-   1. Create a free account at https://www.emailjs.com
-   2. Add an Email Service (Gmail, Outlook, etc.) → copy Service ID
-   3. Create an Email Template with these variables:
-        {{from_name}}   — sender's name
-        {{from_email}}  — sender's email
-        {{message}}     — message body
-      Copy the Template ID.
-   4. Account → API Keys → copy your Public Key
-   5. Paste your values into the three constants below.
-   ─────────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   EMAILJS CREDENTIALS
+   ────────────────────────────────────────────────────────────────
+   1. Sign up at https://www.emailjs.com (free tier is enough).
+   2. Create an Email Service (Gmail, Outlook, etc.).
+      → Copy the Service ID.
+   3. Create an Email Template. Use these variable names inside it:
+        {{from_name}}   — the sender's name
+        {{from_email}}  — the sender's email address
+        {{message}}     — the message body
+      → Copy the Template ID.
+   4. Go to Account → API Keys.
+      → Copy your Public Key.
+   5. Paste each value into the constants below.
+   ════════════════════════════════════════════════════════════════ */
 const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY_HERE';
 const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID_HERE';
 const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID_HERE';
 
 
-/* ═══════════════════════════════════════════════════════════════
-   EMAILJS INIT
-═══════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   EMAILJS — INIT
+════════════════════════════════════════════════════════════════ */
 if (typeof emailjs !== 'undefined') {
   emailjs.init(EMAILJS_PUBLIC_KEY);
 }
 
 
-/* ═══════════════════════════════════════════════════════════════
-   CANVAS STARFIELD BACKGROUND
-═══════════════════════════════════════════════════════════════ */
-(function initStarfield() {
-  const canvas = document.getElementById('bgCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+/* ════════════════════════════════════════════════════════════════
+   THEME TOGGLE
+   The head script already applied the saved class to <html> to
+   prevent a flash. Here we just keep the icon in sync and wire
+   the button click.
+════════════════════════════════════════════════════════════════ */
+(function initTheme() {
+  const btn  = document.getElementById('themeToggle');
+  const icon = document.getElementById('themeIcon');
+  if (!btn || !icon) return;
 
-  const STAR_COUNT = 140;
-  const stars = [];
-
-  function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
+  function syncIcon() {
+    const light = document.documentElement.classList.contains('light-mode');
+    icon.className = light ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
   }
 
-  function createStar() {
-    return {
-      x:      Math.random() * canvas.width,
-      y:      Math.random() * canvas.height,
-      r:      Math.random() * 1.2 + 0.3,
-      speed:  Math.random() * 0.15 + 0.05,
-      alpha:  Math.random() * 0.6 + 0.2,
-      dir:    Math.random() > 0.5 ? 1 : -1,
-      dAlpha: (Math.random() * 0.003 + 0.001),
-    };
-  }
-
-  function initStars() {
-    stars.length = 0;
-    for (let i = 0; i < STAR_COUNT; i++) {
-      stars.push(createStar());
-    }
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(s => {
-      s.alpha += s.dAlpha * s.dir;
-      if (s.alpha >= 0.8 || s.alpha <= 0.1) s.dir *= -1;
-
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(100, 255, 218, ${s.alpha})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-
-  resize();
-  initStars();
-  draw();
-  window.addEventListener('resize', () => { resize(); initStars(); });
-})();
-
-
-/* ═══════════════════════════════════════════════════════════════
-   CUSTOM CURSOR (desktop only)
-═══════════════════════════════════════════════════════════════ */
-(function initCursor() {
-  const el = document.getElementById('cursor');
-  if (!el || window.matchMedia('(max-width: 900px)').matches) return;
-
-  let mx = -100, my = -100; // actual mouse pos
-  let cx = -100, cy = -100; // cursor rendered pos (lags behind)
-  const LAG = 0.12;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-  });
-
-  // Expand on interactive elements
-  const selectors = 'a, button, input, textarea, .project-row, .snav-link, .social-link';
-  document.querySelectorAll(selectors).forEach(node => {
-    node.addEventListener('mouseenter', () => el.classList.add('expanded'));
-    node.addEventListener('mouseleave', () => el.classList.remove('expanded'));
-  });
-
-  (function loop() {
-    cx += (mx - cx) * LAG;
-    cy += (my - cy) * LAG;
-    el.style.left = cx + 'px';
-    el.style.top  = cy + 'px';
-    requestAnimationFrame(loop);
-  })();
-})();
-
-
-/* ═══════════════════════════════════════════════════════════════
-   MOBILE HAMBURGER
-═══════════════════════════════════════════════════════════════ */
-(function initHamburger() {
-  const btn  = document.getElementById('hamburger');
-  const menu = document.getElementById('mobileMenu');
-  if (!btn || !menu) return;
+  syncIcon(); // set icon to match whatever the head script applied
 
   btn.addEventListener('click', () => {
-    const open = menu.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', String(open));
-  });
-
-  menu.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', () => {
-      menu.classList.remove('open');
-      btn.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    });
+    const isNowLight = document.documentElement.classList.toggle('light-mode');
+    localStorage.setItem('theme', isNowLight ? 'light' : 'dark');
+    syncIcon();
   });
 })();
 
 
-/* ═══════════════════════════════════════════════════════════════
-   SIDEBAR NAV — ACTIVE SECTION ON SCROLL
-═══════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   MOBILE HAMBURGER
+════════════════════════════════════════════════════════════════ */
+(function initHamburger() {
+  const btn  = document.getElementById('hamburger');
+  const menu = document.getElementById('mobMenu');
+  if (!btn || !menu) return;
+
+  function close() {
+    btn.classList.remove('open');
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+  }
+
+  btn.addEventListener('click', () => {
+    const opening = !menu.classList.contains('open');
+    if (opening) {
+      btn.classList.add('open');
+      menu.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      menu.setAttribute('aria-hidden', 'false');
+    } else {
+      close();
+    }
+  });
+
+  menu.querySelectorAll('.mob-link').forEach(link => {
+    link.addEventListener('click', close);
+  });
+})();
+
+
+/* ════════════════════════════════════════════════════════════════
+   SIDEBAR NAV — active section highlight on scroll
+════════════════════════════════════════════════════════════════ */
 (function initNavHighlight() {
-  const navLinks = document.querySelectorAll('.snav-link');
+  const links    = document.querySelectorAll('.snav-link');
   const sections = document.querySelectorAll('section[id]');
-  if (!navLinks.length) return;
+  if (!links.length) return;
 
   function update() {
-    const scrollY = window.scrollY + window.innerHeight * 0.25;
-    let current = sections[0]?.id || '';
+    const threshold = window.scrollY + window.innerHeight * 0.3;
+    let current = sections[0] ? sections[0].id : '';
 
     sections.forEach(sec => {
-      if (sec.offsetTop <= scrollY) current = sec.id;
+      if (sec.offsetTop <= threshold) current = sec.id;
     });
 
-    navLinks.forEach(link => {
+    links.forEach(link => {
       link.classList.toggle('active', link.dataset.section === current);
     });
   }
@@ -163,60 +111,43 @@ if (typeof emailjs !== 'undefined') {
 })();
 
 
-/* ═══════════════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════════════════
    SCROLL REVEAL — INTERSECTION OBSERVER
-   .reveal elements animate in when they enter the viewport.
-   Project rows stagger by 80ms between siblings.
-═══════════════════════════════════════════════════════════════ */
+   Only sections below the fold on load get the .reveal class.
+   Sections already visible on load are not animated.
+════════════════════════════════════════════════════════════════ */
 (function initReveal() {
-  const targets = document.querySelectorAll('.reveal');
+  const sections = document.querySelectorAll('.section');
 
   if (!('IntersectionObserver' in window)) {
-    targets.forEach(el => el.classList.add('visible'));
-    return;
+    return; // sections are visible by default — no class = no animation
   }
 
-  // Stagger siblings in .project-list
-  document.querySelectorAll('.project-row').forEach((row, i) => {
-    row.style.transitionDelay = `${i * 80}ms`;
-  });
-
   const observer = new IntersectionObserver(
-    entries => {
+    (entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          obs.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.08, rootMargin: '0px 0px -32px 0px' }
+    { threshold: 0.1 }
   );
 
-  targets.forEach(el => observer.observe(el));
-})();
-
-
-/* ═══════════════════════════════════════════════════════════════
-   BACK TO TOP
-═══════════════════════════════════════════════════════════════ */
-(function initBackToTop() {
-  const btn = document.getElementById('backToTop');
-  if (!btn) return;
-
-  window.addEventListener('scroll', () => {
-    btn.classList.toggle('visible', window.scrollY > 400);
-  }, { passive: true });
-
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top >= window.innerHeight * 0.95) {
+      section.classList.add('reveal');
+      observer.observe(section);
+    }
   });
 })();
 
 
-/* ═══════════════════════════════════════════════════════════════
-   CONTACT FORM
-═══════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   CONTACT FORM — EmailJS submission
+════════════════════════════════════════════════════════════════ */
 (function initContactForm() {
   const form    = document.getElementById('contactForm');
   const status  = document.getElementById('formStatus');
@@ -225,8 +156,8 @@ if (typeof emailjs !== 'undefined') {
   if (!form) return;
 
   function setStatus(msg, type) {
-    status.textContent  = msg;
-    status.className    = 'form-status ' + type;
+    status.textContent = msg;
+    status.className   = 'form-status ' + type;
   }
 
   function setLoading(on) {

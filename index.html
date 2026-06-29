@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- SEO -->
-  <title>Talha Rauf — Sr. Full-Stack Engineer</title>
-  <meta name="description" content="Full-stack software engineer specializing in backend systems, cloud infrastructure, and real-time applications. Based in Lahore, Pakistan." />
-  <meta name="author" content="Talha Rauf" />
-
-  <!-- Open Graph -->
-  <meta property="og:title"       content="Talha Rauf — Sr. Full-Stack Engineer" />
+  <meta name="description" content="Talha Rauf — Sr. Full-Stack Engineer specializing in backend systems, cloud infrastructure, and real-time applications. Based in Lahore, Pakistan." />
+  <meta property="og:title"       content="Talha Rauf — Sr. Software Engineer" />
   <meta property="og:description" content="Full-stack software engineer specializing in backend systems, cloud infrastructure, and real-time applications. Based in Lahore, Pakistan." />
   <meta property="og:type"        content="website" />
-  <meta property="og:locale"      content="en_US" />
+  <title>Talha Rauf — Sr. Software Engineer</title>
 
-  <!-- Favicon: inline SVG data URI -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%230a0f1e'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='monospace' font-size='12' font-weight='700' fill='%2364ffda'%3ETR%3C/text%3E%3C/svg%3E" />
+  <!-- Prevent flash of wrong theme: apply saved class before CSS loads -->
+  <script>
+    (function () {
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+      }
+    }());
+  </script>
 
-  <!-- Fonts -->
+  <!-- Google Fonts: Inter + Lora -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -33,243 +33,192 @@
 </head>
 <body>
 
-  <!-- Background canvas (starfield) -->
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <!-- Theme toggle — fixed top-right -->
+  <button id="themeToggle" aria-label="Toggle colour theme">
+    <i class="fa-solid fa-moon" id="themeIcon"></i>
+  </button>
 
-  <!-- Custom cursor -->
-  <div id="cursor" aria-hidden="true"></div>
-
-  <!-- ═══════════════════════════════════════════
-       MOBILE TOP NAV (hidden on desktop)
-  ═══════════════════════════════════════════ -->
+  <!-- ════════════════════════════════════════════
+       MOBILE NAV  (hidden on desktop ≥ 900px)
+  ════════════════════════════════════════════ -->
   <header id="mobileNav">
-    <div class="mobile-nav-inner">
-      <a href="#about" class="mobile-brand">Talha Rauf</a>
+    <div class="mob-top">
+      <a href="#about" class="mob-brand">Talha Rauf</a>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
-    <nav class="mobile-menu" id="mobileMenu">
-      <a href="#about"      class="mobile-link">About</a>
-      <a href="#projects"   class="mobile-link">Projects</a>
-      <a href="#skills"     class="mobile-link">Skills</a>
-      <a href="#experience" class="mobile-link">Experience</a>
-      <a href="#contact"    class="mobile-link">Contact</a>
+    <nav class="mob-menu" id="mobMenu" aria-hidden="true">
+      <a href="#about"      class="mob-link">About</a>
+      <a href="#projects"   class="mob-link">Projects</a>
+      <a href="#skills"     class="mob-link">Skills</a>
+      <a href="#experience" class="mob-link">Experience</a>
+      <a href="#contact"    class="mob-link">Contact</a>
     </nav>
   </header>
 
-  <!-- ═══════════════════════════════════════════
-       DESKTOP LAYOUT WRAPPER
-  ═══════════════════════════════════════════ -->
+  <!-- ════════════════════════════════════════════
+       PAGE LAYOUT
+  ════════════════════════════════════════════ -->
   <div class="layout">
 
     <!-- ─────────────────────────────────────────
-         SIDEBAR (fixed, desktop only)
-    ───────────────────────────────────────── -->
+         SIDEBAR  (sticky, desktop only)
+    ───────────────────────────────────────────── -->
     <aside class="sidebar">
-      <div class="sidebar-top">
-        <a href="#about" class="sidebar-name">Talha Rauf</a>
-        <p class="sidebar-title">Sr. Full-Stack Engineer</p>
-        <p class="sidebar-tagline">I build things that work in production.</p>
 
-        <nav class="sidebar-nav" id="sidebarNav">
-          <a href="#about"      class="snav-link" data-section="about">
-            <span class="snav-line"></span>About
-          </a>
-          <a href="#projects"   class="snav-link" data-section="projects">
-            <span class="snav-line"></span>Projects
-          </a>
-          <a href="#skills"     class="snav-link" data-section="skills">
-            <span class="snav-line"></span>Skills
-          </a>
-          <a href="#experience" class="snav-link" data-section="experience">
-            <span class="snav-line"></span>Experience
-          </a>
-          <a href="#contact"    class="snav-link" data-section="contact">
-            <span class="snav-line"></span>Contact
-          </a>
+      <div class="sidebar-top">
+        <div class="photo-wrap">
+          <img src="assets/profile.jpg" alt="Talha Rauf" class="profile-photo" />
+        </div>
+
+        <a href="#about" class="sb-name">Talha Rauf</a>
+        <p class="sb-title">Sr. Full-Stack Engineer</p>
+        <p class="sb-tagline">Building systems that work in production.</p>
+
+        <nav class="sb-nav" id="sbNav" aria-label="Page sections">
+          <a href="#about"      class="snav-link" data-section="about">About</a>
+          <a href="#projects"   class="snav-link" data-section="projects">Projects</a>
+          <a href="#skills"     class="snav-link" data-section="skills">Skills</a>
+          <a href="#experience" class="snav-link" data-section="experience">Experience</a>
+          <a href="#contact"    class="snav-link" data-section="contact">Contact</a>
         </nav>
       </div>
 
       <div class="sidebar-bottom">
-        <a href="mailto:talharauf.bsee@gmail.com" class="social-link" aria-label="Email" title="talharauf.bsee@gmail.com">
+        <a href="mailto:talharauf.bsee@gmail.com" class="social-icon" aria-label="Email">
           <i class="fa-solid fa-envelope"></i>
         </a>
-        <a href="https://linkedin.com/in/talha-rauf-lnkin/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+        <a href="https://linkedin.com/in/talha-rauf-lnkin/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
           <i class="fa-brands fa-linkedin-in"></i>
         </a>
-        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
-          <i class="fa-brands fa-github"></i>
-        </a>
       </div>
+
     </aside>
 
     <!-- ─────────────────────────────────────────
-         MAIN SCROLL CONTENT
-    ───────────────────────────────────────── -->
+         SCROLLABLE CONTENT
+    ───────────────────────────────────────────── -->
     <main class="content">
 
-      <!-- ════════════════════════════════════
-           SECTION 1 — ABOUT
-      ════════════════════════════════════ -->
+      <!-- ── 01. ABOUT ──────────────────────── -->
       <section id="about" class="section">
-        <div class="about-grid">
-          <div class="about-text">
-            <p class="code-label">// sr. full-stack engineer</p>
-            <h1 class="about-heading">I build systems that work in production.</h1>
-            <p class="about-body">
-              I'm a full-stack software engineer with 3+ years of experience based in Lahore, Pakistan.
-              I specialize in backend architecture, cloud infrastructure, and real-time systems —
-              the parts of a product most users never see but always feel.
-            </p>
-            <p class="about-body">
-              At GCS Pvt. Ltd. I take full ownership of products: from designing the database schema
-              and API structure through to AWS deployment and CI/CD. I've led junior engineers,
-              conducted technical interviews, and shipped across CRM, ERP, and real-time application domains.
-            </p>
-          </div>
-          <div class="about-photo">
-            <div class="avatar">
-              <img src="assets/profile.jpg" alt="Talha Rauf" class="avatar-img" />
-            </div>
-          </div>
-        </div>
+        <p class="sec-label">— <span class="sec-num">01.</span> about</p>
+        <h2 class="sec-heading">I build systems that work in production.</h2>
+        <p class="body-text">
+          I'm a full-stack software engineer with 3+ years of experience based in Lahore, Pakistan.
+          I focus on backend architecture, cloud infrastructure, and real-time systems — the parts
+          of a product most users never see but always feel.
+        </p>
+        <p class="body-text">
+          At GCS Pvt. Ltd. I take full ownership of products end-to-end: designing the database schema
+          and API structure, through to AWS deployment and CI/CD. I lead junior engineers, conduct
+          technical interviews, and have shipped across CRM, ERP, and real-time application domains.
+        </p>
       </section>
 
-      <!-- ════════════════════════════════════
-           SECTION 2 — PROJECTS
-      ════════════════════════════════════ -->
+      <!-- ── 02. PROJECTS ───────────────────── -->
       <section id="projects" class="section">
-        <h2 class="section-label"><span class="label-number">01.</span> things i've built</h2>
+        <p class="sec-label">— <span class="sec-num">02.</span> things i've built</p>
 
         <div class="project-list">
 
-          <div class="project-row reveal">
-            <span class="project-num">01</span>
-            <div class="project-body">
-              <h3 class="project-name">Star Oil CRM</h3>
-              <p class="project-desc">
-                A sales CRM built from scratch with role-tiered permission control, a multi-stage approval
-                workflow engine, lead and order lifecycle management, real-time location tracking via webhook
-                integration, and an analytics dashboard.
-              </p>
-              <div class="project-tags">
-                <span>Node.js</span><span>NestJS</span><span>MongoDB</span><span>React</span><span>WebSockets</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">01</span>
+            <div class="prow-main">
+              <h3 class="prow-name">Star Oil CRM</h3>
+              <p class="prow-desc">A sales CRM with role-tiered permissions, a multi-stage approval workflow engine, lead and order lifecycle management, real-time location tracking, and an analytics dashboard.</p>
+            </div>
+            <div class="prow-tags">
+              <span>Node.js</span><span>NestJS</span><span>MongoDB</span><span>React</span><span>WebSockets</span>
             </div>
           </div>
 
-          <div class="project-row reveal">
-            <span class="project-num">02</span>
-            <div class="project-body">
-              <h3 class="project-name">GCS Enterprise CRM</h3>
-              <p class="project-desc">
-                Two interconnected enterprise modules: a structured sales pipeline with document management
-                and outcome tracking paired with an operations module covering project management, ticketing,
-                inventory, vendor procurement, and expenditure tracking. Closing a deal auto-provisions a
-                project in operations.
-              </p>
-              <div class="project-tags">
-                <span>Node.js</span><span>Express</span><span>MongoDB</span><span>React</span><span>WebSockets</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">02</span>
+            <div class="prow-main">
+              <h3 class="prow-name">GCS Enterprise CRM</h3>
+              <p class="prow-desc">Two linked enterprise modules: a sales pipeline with document management and outcome tracking, and an operations module covering ticketing, inventory, vendor procurement, and expenditure tracking. Closing a deal auto-provisions a project in operations.</p>
+            </div>
+            <div class="prow-tags">
+              <span>Node.js</span><span>Express</span><span>MongoDB</span><span>React</span><span>WebSockets</span>
             </div>
           </div>
 
-          <div class="project-row reveal">
-            <span class="project-num">03</span>
-            <div class="project-body">
-              <h3 class="project-name">Land Registry Portal</h3>
-              <p class="project-desc">
-                Full DevOps scope: rebuilt broken CI/CD pipelines, configured WAF and ALB, executed a
-                complete cross-region AWS migration under production constraints, and resolved Nginx/Docker
-                container networking conflicts.
-              </p>
-              <div class="project-tags">
-                <span>AWS</span><span>Docker</span><span>GitHub Actions</span><span>Nginx</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">03</span>
+            <div class="prow-main">
+              <h3 class="prow-name">Land Registry Portal</h3>
+              <p class="prow-desc">Full DevOps scope: rebuilt CI/CD pipelines, configured WAF and ALB, executed a cross-region AWS migration under production constraints, and resolved Nginx/Docker container networking conflicts.</p>
+            </div>
+            <div class="prow-tags">
+              <span>AWS</span><span>Docker</span><span>GitHub Actions</span><span>Nginx</span>
             </div>
           </div>
 
-          <div class="project-row reveal">
-            <span class="project-num">04</span>
-            <div class="project-body">
-              <h3 class="project-name">VM Monitoring Portal</h3>
-              <p class="project-desc">
-                Built solo end-to-end. A Node.js backend and Next.js frontend for monitoring virtual machines
-                and host servers, including a stats dashboard and tabbed data views.
-              </p>
-              <div class="project-tags">
-                <span>Node.js</span><span>Next.js</span><span>MongoDB</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">04</span>
+            <div class="prow-main">
+              <h3 class="prow-name">VM Monitoring Portal</h3>
+              <p class="prow-desc">Built solo end-to-end. Node.js backend and Next.js frontend for monitoring virtual machines and host servers, including a stats dashboard and tabbed data views.</p>
+            </div>
+            <div class="prow-tags">
+              <span>Node.js</span><span>Next.js</span><span>MongoDB</span>
             </div>
           </div>
 
-          <div class="project-row reveal">
-            <span class="project-num">05</span>
-            <div class="project-body">
-              <h3 class="project-name">EzVoltz</h3>
-              <p class="project-desc">
-                Backend and web development for an EV charging platform. Geospatial station discovery,
-                session control, real-time state updates, and payment processing.
-              </p>
-              <div class="project-tags">
-                <span>Node.js</span><span>Express</span><span>MongoDB</span><span>React</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">05</span>
+            <div class="prow-main">
+              <h3 class="prow-name">EzVoltz</h3>
+              <p class="prow-desc">Backend and web development for an EV charging platform. Geospatial station discovery, session control, real-time state updates, and payment processing.</p>
+            </div>
+            <div class="prow-tags">
+              <span>Node.js</span><span>Express</span><span>MongoDB</span><span>React</span>
             </div>
           </div>
 
-          <div class="project-row reveal">
-            <span class="project-num">06</span>
-            <div class="project-body">
-              <h3 class="project-name">dropp</h3>
-              <p class="project-desc">
-                Backend and frontend for an AI content platform. Quest engine, user point tracking,
-                and Solana-based on-chain reward distribution.
-              </p>
-              <div class="project-tags">
-                <span>NestJS</span><span>MongoDB</span><span>Solana Web3.js</span><span>React</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">06</span>
+            <div class="prow-main">
+              <h3 class="prow-name">dropp</h3>
+              <p class="prow-desc">Backend and frontend for an AI content platform. Quest engine, user point tracking, and Solana-based on-chain reward distribution.</p>
+            </div>
+            <div class="prow-tags">
+              <span>NestJS</span><span>MongoDB</span><span>Solana Web3.js</span><span>React</span>
             </div>
           </div>
 
-          <div class="project-row reveal">
-            <span class="project-num">07</span>
-            <div class="project-body">
-              <h3 class="project-name">Pro5Plus</h3>
-              <p class="project-desc">
-                Backend for a subscription-based sports coaching app. Session booking, scheduling,
-                payment processing, and subscription lifecycle edge cases.
-              </p>
-              <div class="project-tags">
-                <span>NestJS</span><span>MongoDB</span><span>REST APIs</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">07</span>
+            <div class="prow-main">
+              <h3 class="prow-name">Pro5Plus</h3>
+              <p class="prow-desc">Backend for a subscription-based sports coaching app. Session booking, scheduling, payment processing, and subscription lifecycle edge cases.</p>
+            </div>
+            <div class="prow-tags">
+              <span>NestJS</span><span>MongoDB</span><span>REST APIs</span>
             </div>
           </div>
 
-          <div class="project-row reveal">
-            <span class="project-num">08</span>
-            <div class="project-body">
-              <h3 class="project-name">BrandPulse</h3>
-              <p class="project-desc">
-                Ad publishing platform integrated with AdMob, supporting campaign management
-                and ad delivery workflows.
-              </p>
-              <div class="project-tags">
-                <span>Node.js</span><span>MongoDB</span>
-              </div>
+          <div class="project-row">
+            <span class="prow-num">08</span>
+            <div class="prow-main">
+              <h3 class="prow-name">BrandPulse</h3>
+              <p class="prow-desc">Ad publishing platform integrated with AdMob, supporting campaign management and ad delivery workflows.</p>
+            </div>
+            <div class="prow-tags">
+              <span>Node.js</span><span>MongoDB</span>
             </div>
           </div>
 
         </div>
       </section>
 
-      <!-- ════════════════════════════════════
-           SECTION 3 — SKILLS
-      ════════════════════════════════════ -->
+      <!-- ── 03. SKILLS ─────────────────────── -->
       <section id="skills" class="section">
-        <h2 class="section-label"><span class="label-number">02.</span> tech i work with</h2>
+        <p class="sec-label">— <span class="sec-num">03.</span> tech i work with</p>
 
-        <dl class="skills-list reveal">
+        <dl class="skills-dl">
           <div class="skill-row">
             <dt>Backend</dt>
             <dd>Node.js, Express.js, NestJS, REST APIs, WebSockets, Microservices</dd>
@@ -297,21 +246,19 @@
         </dl>
       </section>
 
-      <!-- ════════════════════════════════════
-           SECTION 4 — EXPERIENCE
-      ════════════════════════════════════ -->
+      <!-- ── 04. EXPERIENCE ─────────────────── -->
       <section id="experience" class="section">
-        <h2 class="section-label"><span class="label-number">03.</span> where i've worked</h2>
+        <p class="sec-label">— <span class="sec-num">04.</span> where i've worked</p>
 
         <div class="timeline">
 
-          <div class="timeline-entry reveal">
-            <div class="tl-marker"></div>
+          <div class="tl-entry">
+            <div class="tl-dot"></div>
             <div class="tl-body">
               <p class="tl-company">GCS Pvt. Ltd.</p>
-              <h3 class="tl-role">Sr. Software Engineer</h3>
+              <p class="tl-role">Sr. Software Engineer</p>
               <p class="tl-meta">Aug 2025 – Present &nbsp;·&nbsp; Lahore, Pakistan</p>
-              <ul class="tl-bullets">
+              <ul class="tl-list">
                 <li>Architected and delivered multiple modules within a company-wide CRM platform, covering project management, sales operations, and internal tooling.</li>
                 <li>Designed backend architecture and REST API layers using Node.js, Express, and MongoDB with a focus on modular structure and clear service boundaries.</li>
                 <li>Implemented role-based access control combining hierarchical roles with permission-level authorization enforced across platform modules.</li>
@@ -322,13 +269,13 @@
             </div>
           </div>
 
-          <div class="timeline-entry reveal">
-            <div class="tl-marker"></div>
+          <div class="tl-entry">
+            <div class="tl-dot"></div>
             <div class="tl-body">
               <p class="tl-company">SolutionsLoft</p>
-              <h3 class="tl-role">Software Engineer</h3>
+              <p class="tl-role">Software Engineer</p>
               <p class="tl-meta">Mar 2023 – Aug 2025 &nbsp;·&nbsp; Lahore, Pakistan</p>
-              <ul class="tl-bullets">
+              <ul class="tl-list">
                 <li>Built and maintained backend services across multiple production platforms using Node.js, NestJS, TypeScript, and a microservices architecture.</li>
                 <li>Worked on geospatial APIs, a Solana blockchain reward system, and subscription billing with real-time scheduling across separate products.</li>
                 <li>Implemented WebSocket-based real-time features including live status updates and event-driven booking flows.</li>
@@ -338,13 +285,13 @@
             </div>
           </div>
 
-          <div class="timeline-entry reveal">
-            <div class="tl-marker"></div>
+          <div class="tl-entry">
+            <div class="tl-dot"></div>
             <div class="tl-body">
               <p class="tl-company">Intellisence</p>
-              <h3 class="tl-role">Software Engineer</h3>
+              <p class="tl-role">Software Engineer</p>
               <p class="tl-meta">Nov 2022 – Mar 2023 &nbsp;·&nbsp; Lahore, Pakistan</p>
-              <ul class="tl-bullets">
+              <ul class="tl-list">
                 <li>Built backend for a peer-to-peer sports booking app covering player matching, session booking, and cost splitting.</li>
                 <li>Fixed critical bugs affecting core user flows and resolved UI inconsistencies in the React frontend.</li>
               </ul>
@@ -354,57 +301,59 @@
         </div>
       </section>
 
-      <!-- ════════════════════════════════════
-           SECTION 5 — CONTACT
-      ════════════════════════════════════ -->
+      <!-- ── 05. CONTACT ────────────────────── -->
       <section id="contact" class="section">
-        <h2 class="section-label"><span class="label-number">04.</span> let's talk</h2>
+        <p class="sec-label">— <span class="sec-num">05.</span> let's talk</p>
+        <p class="contact-intro">Open to freelance projects, contract work, and interesting problems.</p>
+        <a href="mailto:talharauf.bsee@gmail.com" class="contact-email">talharauf.bsee@gmail.com</a>
 
-        <div class="contact-wrap reveal">
-          <p class="contact-intro">
-            Open to freelance projects, contract work, and interesting problems.
-            If you have something worth building, reach out.
-          </p>
-
-          <a href="mailto:talharauf.bsee@gmail.com" class="contact-email">
-            talharauf.bsee@gmail.com
-          </a>
+        <div class="contact-grid">
 
           <form id="contactForm" class="contact-form" novalidate>
-            <div class="field-row">
+            <div class="field-pair">
               <div class="field-group">
-                <label for="name">Name</label>
-                <input type="text"  id="name"    name="name"    placeholder="Your name"       required />
+                <label for="c-name">Name</label>
+                <input type="text"  id="c-name"    name="name"    placeholder="Your name"       required />
               </div>
               <div class="field-group">
-                <label for="email">Email</label>
-                <input type="email" id="email"   name="email"   placeholder="your@email.com"  required />
+                <label for="c-email">Email</label>
+                <input type="email" id="c-email"   name="email"   placeholder="your@email.com"  required />
               </div>
             </div>
             <div class="field-group">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+              <label for="c-message">Message</label>
+              <textarea id="c-message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
             </div>
             <button type="submit" class="send-btn" id="submitBtn">
               <span id="btnText">Send Message</span>
-              <i class="fa-solid fa-arrow-right" id="btnIcon"></i>
             </button>
-            <p class="form-status" id="formStatus"></p>
+            <p id="formStatus" class="form-status" aria-live="polite"></p>
           </form>
+
+          <div class="contact-details">
+            <div class="cd-item">
+              <i class="fa-solid fa-envelope"></i>
+              <a href="mailto:talharauf.bsee@gmail.com">talharauf.bsee@gmail.com</a>
+            </div>
+            <div class="cd-item">
+              <i class="fa-solid fa-phone"></i>
+              <a href="tel:+923064606892">03064606892</a>
+            </div>
+            <div class="cd-item">
+              <i class="fa-brands fa-linkedin-in"></i>
+              <a href="https://linkedin.com/in/talha-rauf-lnkin/" target="_blank" rel="noopener noreferrer">linkedin.com/in/talha-rauf-lnkin/</a>
+            </div>
+          </div>
+
         </div>
       </section>
 
       <footer class="site-footer">
-        <p>Designed &amp; built by <span class="footer-accent">Talha Rauf</span></p>
+        <p>Designed &amp; built by Talha Rauf</p>
       </footer>
 
     </main>
   </div>
-
-  <!-- Back to top -->
-  <button id="backToTop" aria-label="Back to top">
-    <i class="fa-solid fa-arrow-up"></i>
-  </button>
 
   <script src="js/main.js"></script>
 </body>
